@@ -38,6 +38,11 @@ public class LocalStore implements NetworkTunnelStore, ShellStore, StatefulDataS
     }
 
     @Override
+    public boolean requiresTunnel() {
+        return false;
+    }
+
+    @Override
     public NetworkTunnelSession createTunnelSession(int localPort, int remotePort, String address) {
         return null;
     }
