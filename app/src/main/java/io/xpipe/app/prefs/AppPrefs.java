@@ -460,6 +460,10 @@ public final class AppPrefs {
 
     private AppPrefs() {}
 
+    public boolean canSaveLocal() {
+        return globalStorageHandler.isInitialized();
+    }
+
     public ObservableValue<Boolean> disableHttpsTlsCheck() {
         return disableHttpsTlsCheck;
     }

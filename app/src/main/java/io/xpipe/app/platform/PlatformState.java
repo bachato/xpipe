@@ -72,10 +72,6 @@ public enum PlatformState {
     }
 
     public static void handleStderrMessage(String msg) {
-        if (current != RUNNING) {
-            return;
-        }
-
         // Quantum pipeline graphics driver issues are swallowed and only logged to stderr
         // We can still detect them by looking for them in the stderr output
         var l = List.of(
@@ -84,7 +80,8 @@ public enum PlatformState {
                 "java.lang.RuntimeException: Error creating fragment shader",
                 "java.lang.RuntimeException: Error creating shader program"
         );
-        if (AppPrefs.get() != null && !AppPrefs.get().disableHardwareAcceleration().get() && l.stream().anyMatch(msg::contains)) {
+        if (AppPrefs.get() != null && AppPrefs.get().canSaveLocal() &&
+                !AppPrefs.get().disableHardwareAcceleration().get() && l.stream().anyMatch(msg::contains)) {
             teardown();
             AppPrefs.get().setFromExternal(AppPrefs.get().disableHardwareAcceleration(), true);
             AppPrefs.get().save();
